@@ -26,8 +26,8 @@ const MarketCap = ({indicator, setIndicator}) => {
         <option value="Below">Below</option>
         <option value="Between">Between</option>
       </select>
-      {indicator.lowerBound && <LowerBound />}
-      {indicator.upperBound && <UpperBound />}
+      {indicator.lowerBound != null && <LowerBound indicator={indicator} setIndicator={setIndicator} />}
+      {indicator.upperBound != null && <UpperBound indicator={indicator} setIndicator={setIndicator} />}
     </div>
   )
 }

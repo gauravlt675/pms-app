@@ -46,8 +46,8 @@ const AVWAPResistance = ({ indicator, setIndicator }) => {
                 <option value="Cross below">Cross below</option>
                 <option value="Between">Between</option>
             </select>
-            {indicator.lowerBound && <LowerBound />}
-            {indicator.upperBound && <UpperBound />}
+            {indicator.lowerBound != null && <LowerBound indicator={indicator} setIndicator={setIndicator} />}
+            {indicator.upperBound != null && <UpperBound indicator={indicator} setIndicator={setIndicator} />}
         </div>
     )
 }

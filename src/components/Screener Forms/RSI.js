@@ -8,8 +8,8 @@ const RSI = ({ indicator, setIndicator }) => {
     setIndicator({
       ...indicator,
       operator: { type: selectedOperator },
-      lowerBound: selectedOperator === 'Above' || selectedOperator === 'Cross above' || selectedOperator === 'Between' ? true : false,
-      upperBound: selectedOperator === 'Below' || selectedOperator === 'Cross below' || selectedOperator === 'Between' ? true : false
+      lowerBound: selectedOperator === 'Above' || selectedOperator === 'Cross above' || selectedOperator === 'Between' ? true : null,
+      upperBound: selectedOperator === 'Below' || selectedOperator === 'Cross below' || selectedOperator === 'Between' ? true : null
     })
   }
 
@@ -45,8 +45,8 @@ const RSI = ({ indicator, setIndicator }) => {
         <option value="Cross below">Cross below</option>
         <option value="Between">Between</option>
       </select>
-      {indicator.lowerBound && <LowerBound />}
-      {indicator.upperBound && <UpperBound />}
+      {indicator.lowerBound != null && <LowerBound indicator={indicator} setIndicator={setIndicator} />}
+      {indicator.upperBound != null && <UpperBound indicator={indicator} setIndicator={setIndicator} />}
     </div>
   )
 }

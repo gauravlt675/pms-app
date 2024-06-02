@@ -19,22 +19,31 @@ const Screener = () => {
     lowerBound: null,
   });
 
+
+  //API CALL
   const fetchData = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false)
-      setData('hi')
-    }, 2000)
-  }
+    try {
+      const response = await axios.post('http://localhost:3001/api/screener', formInstances, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
+      setData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleIndicatorChange = (e) => {
     setIndicator({ ...indicator, indicator: e.target.value });
   };
 
-
   const addFormToData = () => {
-    if (indicator.indicator === '' || indicator.period === '') {
+    if (indicator.indicator === '' || indicator.period === '' || indicator.operator.type === '') {
       alert('Please fill in all required fields.');
       return;
     }
@@ -49,7 +58,7 @@ const Screener = () => {
   const resetForm = () => {
     setIndicator({
       indicator: '',
-      period: '',
+      period: 1,
       timeframe: 'Day',
       operator: {
         type: '',
@@ -60,9 +69,13 @@ const Screener = () => {
   };
 
   const handleSubmit = () => {
-    addFormToData();
-    fetchData();
-    console.log(formInstances)
+    if (formInstances.length === 0) {
+      alert('No indicators selected');
+      return;
+    }
+
+    fetchData(formInstances);
+    console.log(formInstances);
   };
 
   return (
@@ -90,17 +103,21 @@ const Screener = () => {
       <button onClick={addFormToData}>
         Add Another
       </button>
-      <button onClick={handleSubmit}>
-        Submit
+      <button onClick={() => setFormInstances([])}>
+        Clear All
       </button>
 
-      {/* Displaying form data as JSON objects */}
+  
       {formInstances.map((formData, index) => (
         <p key={index}>{JSON.stringify(formData)}</p>
       ))}
 
       {loading && <h1>Loading...</h1>}
-      {data && <h1>Stocks</h1>}
+      {data && <h1>{JSON.stringify(data)}</h1>}
+
+      <button onClick={handleSubmit}>
+        Submit
+      </button>
     </div>
   );
 };
